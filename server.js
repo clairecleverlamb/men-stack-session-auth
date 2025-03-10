@@ -44,8 +44,17 @@ app.get('/', (req, res) => {
     });
 });
 
-// tell the app to listen to the HTTP requests 
+// protected routes - user must be logged in for access 
+app.get('/vip-lounge', (req, res) => {
+    if (req.session.user) {
+        res.send(`Welcome to the VIP Lounge ${req.session.user.username}`);
+    } else {
+        res.send("Sorry, you must be logged for that");
+    }
+})
 
+
+// tell the app to listen to the HTTP requests 
 app.listen(port, () => {
     console.log(`The express app is ready on port ${port}`);
 })
