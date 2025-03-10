@@ -5,6 +5,8 @@ const methodOverride = require("method-override");
 const morgan = require("morgan");
 const dotenv = require("dotenv");
 
+const authController = require('./controllers/auth')
+
 
 //  init express app
 const app = express();
@@ -23,6 +25,11 @@ mongoose.connection.on('connected', () => {
 app.use(express.urlencoded({ extended: false }));
 app.use(methodOverride('_method'));
 app.use(morgan('dev'));
+
+// any HTTP requests from the broswer that comes to /auth..
+// will be automatically be forwarded to the router code 
+// inside of the authController 
+app.use('/auth', authController);
 
 // Mount routes 
 app.get('/', (req, res) => {
