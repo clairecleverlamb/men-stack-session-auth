@@ -24,7 +24,10 @@ app.use(express.urlencoded({ extended: false }));
 app.use(methodOverride('_method'));
 app.use(morgan('dev'));
 
-
+// Mount routes 
+app.get('/', (req, res) => {
+    res.render('index.ejs');
+});
 
 // tell the app to listen to the HTTP requests 
 
