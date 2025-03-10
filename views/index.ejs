@@ -11,14 +11,17 @@
     <% if(user) { %>
         <h1>Welcome to the app, <%= user.username %>
         </h1>
-        <% } else { %>
-            <h1>Welcome to the App! </h1>
-            <nav>
-                <a href="/auth/sign-up">Sign Up</a>
-            </nav>
-            <nav>
-                <a href="/auth/sign-in">Sign In</a>
-            </nav>
-        <% } %>
+        <a href="/auth/sign-out">Sign Out</a>
+    <% } else { %>
+        <h1>Welcome to the App! </h1>
+        <nav>
+            <a href="/auth/sign-up">Sign Up</a>
+        </nav>
+        <nav>
+            <a href="/auth/sign-in">Sign In</a>
+        </nav>
+    <% } %>
+    <p><a href="/vip-lounge">Get into the VIP Users Only lounge!</a></p>
 </body>
+
 </html>
