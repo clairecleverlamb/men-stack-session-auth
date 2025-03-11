@@ -29,14 +29,27 @@ app.use(morgan('dev'));
 app.use(session({
     secret: process.env.SESSION_SECRET,
     resave: false,
-    saveUninitialized: false,
-}))
+    saveUninitialized: true,
+}));
+app.use((req, res, next) => {
+    if (req.session.message) {
+        // res.local makes info avail to templates: to all the ejs in fruits
+        // res is the response obj
+        // the response obj is part of our communication with the client 
+        res.locals.message = req.session.message;
+        // now we clear out req.session.message
+        req.session.message = null;
+    }
+    // now we can pass along the request to our routes 
+    next(); // next calls the next middleware function or route handler
+    // note: route handlers are a type of middleware 
+})
 
 // any HTTP requests from the broswer that comes to /auth..
 // will be automatically be forwarded to the router code 
 // inside of the authController 
 app.use('/auth', authController);
-app.use('/auth', fruitController);
+app.use('/fruits', fruitController);
 
 // Mount routes 
 app.get('/', (req, res) => {
@@ -52,10 +65,22 @@ app.get('/vip-lounge', (req, res) => {
     } else {
         res.send("Sorry, you must be logged for that");
     }
+});
+
+// the catch all route should ALWAYS be listed last 
+app.get('*', (req, res) => {
+    res.status(404).render('error.ejs', { msg: "Page not found! "})
 })
 
+const handleServerError = (err) => {
+    if (err.code === 'EADDRINUSE') {
+        console.log(`Warning! Port ${port} is already taken`);
+    } else {
+        console.log('error', handleServerError);
+    } 
+}
 
 // tell the app to listen to the HTTP requests 
 app.listen(port, () => {
     console.log(`The express app is ready on port ${port}`);
-})
+}).on('error', handleServerError);
