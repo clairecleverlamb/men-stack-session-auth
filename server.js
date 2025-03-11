@@ -6,8 +6,8 @@ const morgan = require("morgan");
 const dotenv = require("dotenv");
 
 const authController = require('./controllers/auth');
+const fruitController = require('./controllers/fruits')
 const session = require('express-session');
-
 
 //  init express app
 const app = express();
@@ -36,6 +36,7 @@ app.use(session({
 // will be automatically be forwarded to the router code 
 // inside of the authController 
 app.use('/auth', authController);
+app.use('/auth', fruitController);
 
 // Mount routes 
 app.get('/', (req, res) => {
